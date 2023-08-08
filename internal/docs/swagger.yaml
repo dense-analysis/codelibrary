@@ -1,0 +1,255 @@
+definitions:
+  CodeSample:
+    properties:
+      body:
+        type: string
+      created:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      language:
+        $ref: '#/definitions/Language'
+      modified:
+        type: string
+      submittedBy:
+        $ref: '#/definitions/User'
+      title:
+        type: string
+    type: object
+  CodeSamplePage:
+    properties:
+      count:
+        example: 1
+        type: integer
+      results:
+        items:
+          $ref: '#/definitions/CodeSample'
+        type: array
+    type: object
+  CodeSampleSubmission:
+    properties:
+      body:
+        type: string
+      description:
+        type: string
+      languageId:
+        type: string
+      title:
+        type: string
+    type: object
+  Error:
+    properties:
+      detail:
+        items:
+          $ref: '#/definitions/ErrorLocation'
+        type: array
+    type: object
+  ErrorLocation:
+    properties:
+      loc:
+        items:
+          type: string
+        type: array
+      msg:
+        type: string
+      type:
+        type: string
+    type: object
+  Language:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  LoginData:
+    properties:
+      password:
+        example: password
+        type: string
+      username:
+        type: string
+    type: object
+  RegisterUser:
+    properties:
+      confirmPassword:
+        example: password
+        type: string
+      password:
+        example: password
+        type: string
+      username:
+        type: string
+    type: object
+  User:
+    properties:
+      id:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      description: Log in with user credentials
+      parameters:
+      - description: Login Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/LoginData'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/User'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Log in
+      tags:
+      - Authentication
+  /auth/logout:
+    post:
+      description: Clear the user from the session
+      responses:
+        "204":
+          description: No Content
+      summary: Log out
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      description: Register a new user with a given password
+      parameters:
+      - description: User Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/RegisterUser'
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/User'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Register a new user
+      tags:
+      - Authentication
+  /code:
+    get:
+      description: Retrieve a list of Code Samples
+      parameters:
+      - description: A string for searching for code samples
+        in: query
+        name: q
+        type: string
+      - description: Search for results for a particular language by name
+        in: query
+        name: l
+        type: string
+      - description: The page to list results from
+        in: query
+        name: page
+        type: integer
+      - description: The amount of items to fetch in a given page
+        in: query
+        name: pageSize
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeSamplePage'
+      summary: List Code Samples
+      tags:
+      - Code Samples
+    post:
+      description: Submit a new Code Sample
+      parameters:
+      - description: CodeSample data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/CodeSampleSubmission'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/CodeSample'
+      summary: Submit Code Sample
+      tags:
+      - Code Samples
+  /code/{id}:
+    delete:
+      description: Delete a Code Sample
+      parameters:
+      - description: The UUID of the code sample to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+      summary: Delete a Code Sample
+      tags:
+      - Code Samples
+    get:
+      description: Get a Code Sample
+      parameters:
+      - description: The UUID of the code sample to get
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeSample'
+      summary: Get a Code Sample
+      tags:
+      - Code Samples
+    put:
+      description: Update an existing Code Sample
+      parameters:
+      - description: The UUID of the code sample to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: CodeSample data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/CodeSampleSubmission'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/CodeSample'
+      summary: Update a Code Sample
+      tags:
+      - Code Samples
+swagger: "2.0"

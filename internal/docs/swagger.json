@@ -1,0 +1,392 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "Log in with user credentials",
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Log in",
+                "parameters": [
+                    {
+                        "description": "Login Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "description": "Clear the user from the session",
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Log out",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "Register a new user with a given password",
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "parameters": [
+                    {
+                        "description": "User Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RegisterUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/code": {
+            "get": {
+                "description": "Retrieve a list of Code Samples",
+                "tags": [
+                    "Code Samples"
+                ],
+                "summary": "List Code Samples",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "A string for searching for code samples",
+                        "name": "q",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search for results for a particular language by name",
+                        "name": "l",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The page to list results from",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The amount of items to fetch in a given page",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CodeSamplePage"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Submit a new Code Sample",
+                "tags": [
+                    "Code Samples"
+                ],
+                "summary": "Submit Code Sample",
+                "parameters": [
+                    {
+                        "description": "CodeSample data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CodeSampleSubmission"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/CodeSample"
+                        }
+                    }
+                }
+            }
+        },
+        "/code/{id}": {
+            "get": {
+                "description": "Get a Code Sample",
+                "tags": [
+                    "Code Samples"
+                ],
+                "summary": "Get a Code Sample",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The UUID of the code sample to get",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CodeSample"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an existing Code Sample",
+                "tags": [
+                    "Code Samples"
+                ],
+                "summary": "Update a Code Sample",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The UUID of the code sample to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "CodeSample data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CodeSampleSubmission"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CodeSample"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a Code Sample",
+                "tags": [
+                    "Code Samples"
+                ],
+                "summary": "Delete a Code Sample",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The UUID of the code sample to delete",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "CodeSample": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "language": {
+                    "$ref": "#/definitions/Language"
+                },
+                "modified": {
+                    "type": "string"
+                },
+                "submittedBy": {
+                    "$ref": "#/definitions/User"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "CodeSamplePage": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CodeSample"
+                    }
+                }
+            }
+        },
+        "CodeSampleSubmission": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "languageId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ErrorLocation"
+                    }
+                }
+            }
+        },
+        "ErrorLocation": {
+            "type": "object",
+            "properties": {
+                "loc": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "Language": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "LoginData": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "RegisterUser": {
+            "type": "object",
+            "properties": {
+                "confirmPassword": {
+                    "type": "string",
+                    "example": "password"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "password"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ./go.mod:/code/go.mod
+      - ./go.sum:/code/go.sum
+      - ./.air.toml:/code/.air.toml
+      - ./cmd:/code/cmd
+      - ./internal:/code/internal
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-db}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-codelibrary}
+    command: air
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - codelibrary
+  db:
+    image: postgres:15.3
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=codelibrary
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - codelibrary
+
+volumes:
+  pgdata:
+
+networks:
+  codelibrary:
+    driver: bridge
