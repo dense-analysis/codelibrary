@@ -34,6 +34,20 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - codelibrary
+  ui:
+    build:
+      context: codelibrary-ui
+    volumes:
+      - ./codelibrary-ui/tsconfig.json:/code/tsconfig.json
+      - ./codelibrary-ui/webpack.config.ts:/code/webpack.config.ts
+      - ./codelibrary-ui/src:/code/src
+      - ./codelibrary-ui/public:/code/public
+    command: yarn run dev-server
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+    networks:
+      - codelibrary
 
 volumes:
   pgdata:
