@@ -62,6 +62,13 @@ func TestLoginErrors(t *testing.T) {
 			loginData:          routes.LoginData{Username: "user", Password: ""},
 			expectedStatusCode: 403,
 		},
+		"LongPassword": {
+			loginData: routes.LoginData{
+				Username: "user",
+				Password: testutils.GenerateString('x', 65),
+			},
+			expectedStatusCode: 403,
+		},
 	}
 
 	expectedError := models.NewErrorLocation("invalidCredentials", "Invalid user credentials", "body")
@@ -165,6 +172,19 @@ func TestRegisterErrors(t *testing.T) {
 			expectedError: models.NewErrorLocation(
 				"badPassword",
 				"Password too long",
+				"body",
+			),
+		},
+		"UsernameTooLong": {
+			data: models.RegisterUser{
+				Username:        testutils.GenerateString('x', 256),
+				Password:        testutils.GenerateString('x', 8),
+				ConfirmPassword: testutils.GenerateString('x', 8),
+			},
+			expectedStatusCode: 422,
+			expectedError: models.NewErrorLocation(
+				"badUsername",
+				"Username too long",
 				"body",
 			),
 		},

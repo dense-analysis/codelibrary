@@ -1,23 +1,19 @@
 # codelibrary
 
-Install `swag` to generate swagger documentation.
+## Development
+
+Ensure Docker is installed, and start the project with `docker compose up`.
+
+You can connect to the Postgres database through the `db` service:
 
 ```
-go install github.com/swaggo/swag/cmd/swag@latest
+docker compose exec db psql codelibrary postgres
 ```
 
-```
-swag init -d cmd/codelibrary/ -o internal/docs
-```
-
-Install `air` for hot code reloading.
+The database schema will be created automatically on first run. You can update
+the schema if needed by running the SQL file again.
 
 ```
-go install github.com/cosmtrek/air@latest
-```
-
-You can run the project in development mode with `air`.
-
-```
-air
+docker compose exec db psql codelibrary postgres \
+  -q -f /docker-entrypoint-initdb.d/codelibrary.sql
 ```

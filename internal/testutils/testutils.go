@@ -9,7 +9,7 @@ import (
 
 // GenerateString create a string of a given length repeating a character.
 func GenerateString(char rune, length int) string {
-	return ranges.String(ranges.Take[rune](ranges.Repeat(char), 65))
+	return ranges.String(ranges.Take[rune](ranges.Repeat(char), length))
 }
 
 func UUIDFromInt(n uint64) uuid.UUID {

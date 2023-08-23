@@ -171,6 +171,7 @@ func TestUpdateCodeSampleValidation(t *testing.T) {
 	var tests = map[string]struct {
 		submission         models.CodeSampleSubmission
 		paramsID           string
+		languageError      error
 		sample             models.CodeSample
 		expectedStatusCode int
 		expectedError      models.ErrorLocation
@@ -191,6 +192,14 @@ func TestUpdateCodeSampleValidation(t *testing.T) {
 			expectedStatusCode: 400,
 			expectedError:      models.NewErrorLocation("invalidId", "invalid UUID", "params", "id"),
 		},
+		"LanguageNotFound": {
+			submission:         models.CodeSampleSubmission{},
+			paramsID:           testutils.UUIDFromInt(1).String(),
+			languageError:      database.NotFoundErr,
+			sample:             models.CodeSample{},
+			expectedStatusCode: 422,
+			expectedError:      models.NewErrorLocation("notFound", "Language not found", "body", "languageId"),
+		},
 	}
 
 	for name, testData := range tests {
@@ -204,6 +213,8 @@ func TestUpdateCodeSampleValidation(t *testing.T) {
 			user := models.User{ID: testutils.UUIDFromInt(2)}
 			apisession.SaveUser(r.Ctx, user)
 			r.DB.GetUserResult.A = user
+
+			r.DB.GetLanguageResult.B = testData.languageError
 
 			r.SetRequestBody(testData.submission)
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/encryptcookie"
@@ -17,9 +18,8 @@ func main() {
 	app := fiber.New(fiber.Config{
 		ErrorHandler: errorhandler.ErrorHandler,
 	})
-	// TODO: Create a better secret.
 	app.Use(encryptcookie.New(encryptcookie.Config{
-		Key: "secret-thirty-2-character-string",
+		Key: os.Getenv("COOKIE_SECRET"),
 	}))
 	db, err := database.New(context.Background())
 

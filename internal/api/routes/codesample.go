@@ -119,6 +119,16 @@ func submitCodeSample(db database.DatabaseAPI, c *fiber.Ctx, mode SubmitMode) er
 	language, err := db.GetLanguage(c.Context(), submission.LanguageID)
 
 	if err != nil {
+		if err == database.NotFoundErr {
+			return sendError(
+				c,
+				422,
+				[]models.ErrorLocation{
+					models.NewErrorLocation("notFound", "Language not found", "body", "languageId"),
+				},
+			)
+		}
+
 		return err
 	}
 

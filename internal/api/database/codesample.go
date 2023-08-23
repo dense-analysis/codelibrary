@@ -47,16 +47,16 @@ func (db *databaseAPIImpl) FindCodeSamples(
 	// Fetch a page of results.
 	orderBy := ` ORDER BY (search_index @@ websearch_to_tsquery('english', $1))`
 	pagination := ` LIMIT $` +
-		strconv.Itoa(len(params)) +
+		strconv.Itoa(len(params)+1) +
 		` OFFSET $` +
-		strconv.Itoa(len(params)+1)
+		strconv.Itoa(len(params)+2)
 	params = append(params, search.PageSize)
 	params = append(params, offset)
 	pageRows, err := db.pool.Query(
 		ctx,
 		`
 			SELECT
-				id,
+				codesample.id,
 				submitted_by_id,
 				username,
 				language_id,
@@ -134,7 +134,7 @@ func (db *databaseAPIImpl) GetCodeSample(ctx context.Context, id uuid.UUID) (mod
 			ON "user".id = codesample.submitted_by_id
 			INNER JOIN language
 			ON language.id = codesample.language_id
-			WHERE id = $1
+			WHERE codesample.id = $1
 		`,
 		id,
 	)
@@ -194,8 +194,7 @@ func (db *databaseAPIImpl) UpdateCodeSample(ctx context.Context, sample models.C
 				search_index = setweight(to_tsvector($4), 'A') ||
 					setweight(to_tsvector($5), 'B') ||
 					setweight(to_tsvector($6), 'C')
-			)
-			WHERE id = $1
+			WHERE codesample.id = $1
 		`,
 		sample.ID, sample.SubmittedBy.ID, sample.Language.ID,
 		sample.Title, sample.Description, sample.Body,

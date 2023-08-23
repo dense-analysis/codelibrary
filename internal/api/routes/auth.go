@@ -10,6 +10,10 @@ import (
 	"github.com/google/uuid"
 )
 
+const minimumPasswordLength = 8
+const maximumPasswordLength = 64
+const maximumUsernameLength = 255
+
 type LoginData struct {
 	Username string `json:"username"`
 	Password string `json:"password" example:"password"`
@@ -31,8 +35,10 @@ func LoginHandler(db database.DatabaseAPI) fiber.Handler {
 			return err
 		}
 
-		if len(loginData.Username) == 0 || len(loginData.Password) == 0 {
-			// Don't run the query if the fields are empty.
+		if len(loginData.Username) == 0 ||
+			len(loginData.Password) == 0 ||
+			len(loginData.Password) > maximumPasswordLength {
+			// Don't run the query if the fields are empty or the password is too long.
 			return sendBodyError(c, 403, "invalidCredentials", "Invalid user credentials")
 		}
 
@@ -89,12 +95,16 @@ func RegisterHandler(db database.DatabaseAPI) fiber.Handler {
 			return sendBodyError(c, 422, "passwordMismatch", "Passwords do not match")
 		}
 
-		if len(registerUser.Password) < 8 {
+		if len(registerUser.Password) < minimumPasswordLength {
 			return sendBodyError(c, 422, "badPassword", "Password too short")
 		}
 
-		if len(registerUser.Password) > 64 {
+		if len(registerUser.Password) > maximumPasswordLength {
 			return sendBodyError(c, 422, "badPassword", "Password too long")
+		}
+
+		if len(registerUser.Username) > maximumUsernameLength {
+			return sendBodyError(c, 422, "badUsername", "Username too long")
 		}
 
 		id, err := uuid.NewRandom()

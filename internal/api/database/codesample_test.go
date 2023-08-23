@@ -198,7 +198,7 @@ func TestGetCodeSample(t *testing.T) {
 			created,
 			modified,
 		)
-	mock.ExpectQuery(`SELECT .* FROM codesample .* WHERE id = \$1`).
+	mock.ExpectQuery(`SELECT .* FROM codesample .* WHERE codesample.id = \$1`).
 		WithArgs(testutils.UUIDFromInt(1)).
 		WillReturnRows(expectedRows)
 
