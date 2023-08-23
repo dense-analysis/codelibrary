@@ -1,4 +1,6 @@
 {
+  "name": "codelibrary-ui",
+  "license": "AGPL-3.0-only",
   "packageManager": "yarn@3.6.2",
   "dependencies": {
     "@babel/core": "^7.22.10",
