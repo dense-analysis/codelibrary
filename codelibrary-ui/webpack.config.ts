@@ -18,13 +18,14 @@ const config: Configuration = {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['@babel/preset-react', {runtime: 'automatic'}],
               [
                 '@babel/preset-env',
                 {
                   targets: {chrome: 100},
                 },
               ],
+              ['@babel/preset-react', {runtime: 'automatic'}],
+              '@babel/preset-typescript',
             ],
           },
         },
@@ -44,12 +45,11 @@ const config: Configuration = {
     maxAssetSize: 5 * 1024 * 1024,
   },
   devServer: {
-    hot: false,
+    hot: true,
     client: {
       logging: 'none',
       overlay: false,
     },
-    webSocketServer: false,
     static: {
       directory: path.join(__dirname, 'public/'),
     },
