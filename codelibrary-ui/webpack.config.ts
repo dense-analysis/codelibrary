@@ -1,7 +1,7 @@
 import * as os from 'os'
 import * as path from 'path'
 import {Configuration} from 'webpack'
-import * as webpackDevServer from 'webpack-dev-server';
+import * as webpackDevServer from 'webpack-dev-server'
 
 const config: Configuration = {
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
@@ -18,13 +18,13 @@ const config: Configuration = {
           loader: 'babel-loader',
           options: {
             presets: [
-              ["@babel/preset-react", {"runtime": "automatic"}],
+              ['@babel/preset-react', {runtime: 'automatic'}],
               [
                 '@babel/preset-env',
                 {
                   targets: {chrome: 100},
-                }
-              ]
+                },
+              ],
             ],
           },
         },
@@ -55,7 +55,7 @@ const config: Configuration = {
     },
     allowedHosts: 'all',
     historyApiFallback: true,
-    port: process.env.DEV_SERVER_PORT || "8000",
+    port: process.env.DEV_SERVER_PORT || '8000',
   },
 }
 
