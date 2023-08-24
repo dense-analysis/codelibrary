@@ -4,7 +4,7 @@
         "contact": {}
     },
     "paths": {
-        "/auth/login": {
+        "/api/auth/login": {
             "post": {
                 "description": "Log in with user credentials",
                 "tags": [
@@ -41,7 +41,7 @@
                 }
             }
         },
-        "/auth/logout": {
+        "/api/auth/logout": {
             "post": {
                 "description": "Clear the user from the session",
                 "tags": [
@@ -55,7 +55,7 @@
                 }
             }
         },
-        "/auth/register": {
+        "/api/auth/register": {
             "post": {
                 "description": "Register a new user with a given password",
                 "tags": [
@@ -98,7 +98,7 @@
                 }
             }
         },
-        "/code": {
+        "/api/code": {
             "get": {
                 "description": "Retrieve a list of Code Samples",
                 "tags": [
@@ -167,7 +167,7 @@
                 }
             }
         },
-        "/code/{id}": {
+        "/api/code/{id}": {
             "get": {
                 "description": "Get a Code Sample",
                 "tags": [

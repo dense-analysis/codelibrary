@@ -59,7 +59,7 @@ func validateCodeSampleSearch(c *fiber.Ctx, search *models.CodeSampleSearch) (er
 // @Param page query integer false "The page to list results from"
 // @Param pageSize query integer false "The amount of items to fetch in a given page"
 // @Success 200 {object} CodeSamplePage
-// @Router /code [get]
+// @Router /api/code [get]
 func ListCodeSamplesHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var search models.CodeSampleSearch
@@ -179,7 +179,7 @@ func submitCodeSample(db database.DatabaseAPI, c *fiber.Ctx, mode SubmitMode) er
 // @Description Submit a new Code Sample
 // @Param data body CodeSampleSubmission true "CodeSample data"
 // @Success 201 {object} CodeSample
-// @Router /code [post]
+// @Router /api/code [post]
 func CreateCodeSampleHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return submitCodeSample(db, c, Create)
@@ -193,7 +193,7 @@ func CreateCodeSampleHandler(db database.DatabaseAPI) fiber.Handler {
 // @Param id path string true "The UUID of the code sample to update"
 // @Param data body CodeSampleSubmission true "CodeSample data"
 // @Success 200 {object} CodeSample
-// @Router /code/{id} [put]
+// @Router /api/code/{id} [put]
 func UpdateCodeSampleHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return submitCodeSample(db, c, Update)
@@ -206,7 +206,7 @@ func UpdateCodeSampleHandler(db database.DatabaseAPI) fiber.Handler {
 // @Description Get a Code Sample
 // @Param id path string true "The UUID of the code sample to get"
 // @Success 200 {object} CodeSample
-// @Router /code/{id} [get]
+// @Router /api/code/{id} [get]
 func GetCodeSampleHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id, err := parseParamsID(c)
@@ -231,7 +231,7 @@ func GetCodeSampleHandler(db database.DatabaseAPI) fiber.Handler {
 // @Description Delete a Code Sample
 // @Param id path string true "The UUID of the code sample to delete"
 // @Success 204
-// @Router /code/{id} [delete]
+// @Router /api/code/{id} [delete]
 func DeleteCodeSampleHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id, err := parseParamsID(c)

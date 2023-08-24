@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/login": {
+        "/api/auth/login": {
             "post": {
                 "description": "Log in with user credentials",
                 "tags": [
@@ -53,7 +53,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/logout": {
+        "/api/auth/logout": {
             "post": {
                 "description": "Clear the user from the session",
                 "tags": [
@@ -67,7 +67,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/register": {
+        "/api/auth/register": {
             "post": {
                 "description": "Register a new user with a given password",
                 "tags": [
@@ -110,7 +110,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/code": {
+        "/api/code": {
             "get": {
                 "description": "Retrieve a list of Code Samples",
                 "tags": [
@@ -179,7 +179,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/code/{id}": {
+        "/api/code/{id}": {
             "get": {
                 "description": "Get a Code Sample",
                 "tags": [

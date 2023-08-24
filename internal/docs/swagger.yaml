@@ -93,7 +93,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /auth/login:
+  /api/auth/login:
     post:
       description: Log in with user credentials
       parameters:
@@ -117,7 +117,7 @@ paths:
       summary: Log in
       tags:
       - Authentication
-  /auth/logout:
+  /api/auth/logout:
     post:
       description: Clear the user from the session
       responses:
@@ -126,7 +126,7 @@ paths:
       summary: Log out
       tags:
       - Authentication
-  /auth/register:
+  /api/auth/register:
     post:
       description: Register a new user with a given password
       parameters:
@@ -154,7 +154,7 @@ paths:
       summary: Register a new user
       tags:
       - Authentication
-  /code:
+  /api/code:
     get:
       description: Retrieve a list of Code Samples
       parameters:
@@ -199,7 +199,7 @@ paths:
       summary: Submit Code Sample
       tags:
       - Code Samples
-  /code/{id}:
+  /api/code/{id}:
     delete:
       description: Delete a Code Sample
       parameters:

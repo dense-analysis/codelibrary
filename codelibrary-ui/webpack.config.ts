@@ -1,3 +1,4 @@
+import * as os from 'os'
 import * as path from 'path'
 import {Configuration} from 'webpack'
 import * as webpackDevServer from 'webpack-dev-server';
@@ -43,11 +44,18 @@ const config: Configuration = {
     maxAssetSize: 5 * 1024 * 1024,
   },
   devServer: {
+    hot: false,
+    client: {
+      logging: 'none',
+      overlay: false,
+    },
+    webSocketServer: false,
     static: {
       directory: path.join(__dirname, 'public/'),
     },
+    allowedHosts: 'all',
     historyApiFallback: true,
-    port: 9000,
+    port: process.env.DEV_SERVER_PORT || "8000",
   },
 }
 

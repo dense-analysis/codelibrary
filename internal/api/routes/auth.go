@@ -26,7 +26,7 @@ type LoginData struct {
 // @Param data body LoginData true "Login Data"
 // @Success 200 {array} User
 // @Failure 403 {object} Error
-// @Router /auth/login [post]
+// @Router /api/auth/login [post]
 func LoginHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var loginData LoginData
@@ -67,7 +67,7 @@ func LoginHandler(db database.DatabaseAPI) fiber.Handler {
 // @Summary Log out
 // @Description Clear the user from the session
 // @Success 204
-// @Router /auth/logout [post]
+// @Router /api/auth/logout [post]
 func LogoutHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		return apisession.DeleteUser(c)
@@ -82,7 +82,7 @@ func LogoutHandler(db database.DatabaseAPI) fiber.Handler {
 // @Success 200 {array} User
 // @Failure 422 {object} Error
 // @Failure 403 {object} Error
-// @Router /auth/register [post]
+// @Router /api/auth/register [post]
 func RegisterHandler(db database.DatabaseAPI) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var registerUser models.RegisterUser

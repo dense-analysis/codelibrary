@@ -28,15 +28,21 @@ func main() {
 		panic(err)
 	}
 
-	app.Post("/auth/login", routes.LoginHandler(db))
-	app.Post("/auth/logout", routes.LogoutHandler(db))
-	app.Post("/auth/register", routes.RegisterHandler(db))
-	app.Get("/code", routes.ListCodeSamplesHandler(db))
-	app.Post("/code", routes.CreateCodeSampleHandler(db))
-	app.Get("/code/:id", routes.GetCodeSampleHandler(db))
-	app.Put("/code/:id", routes.UpdateCodeSampleHandler(db))
-	app.Delete("/code/:id", routes.DeleteCodeSampleHandler(db))
-	app.Get("/docs/*", swagger.HandlerDefault)
+	app.Post("/api/auth/login", routes.LoginHandler(db))
+	app.Post("/api/auth/logout", routes.LogoutHandler(db))
+	app.Post("/api/auth/register", routes.RegisterHandler(db))
+	app.Get("/api/code", routes.ListCodeSamplesHandler(db))
+	app.Post("/api/code", routes.CreateCodeSampleHandler(db))
+	app.Get("/api/code/:id", routes.GetCodeSampleHandler(db))
+	app.Put("/api/code/:id", routes.UpdateCodeSampleHandler(db))
+	app.Delete("/api/code/:id", routes.DeleteCodeSampleHandler(db))
+	app.Get("/api/docs/*", swagger.HandlerDefault)
 
-	app.Listen(":8080")
+	port := os.Getenv("API_PORT")
+
+	if len(port) == 0 {
+		port = "7000"
+	}
+
+	app.Listen(":" + port)
 }
